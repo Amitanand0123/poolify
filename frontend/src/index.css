@@ -2,6 +2,7 @@
 
 body {
   background-color: #e6e6e6;
-  font-family: "Bogle", "Helvetica Neue", "Helvetica", "Arial", "sans-serif";
   color: #2e2f30;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }

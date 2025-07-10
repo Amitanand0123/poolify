@@ -1,24 +1,15 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { 
-  Search, 
-  ShoppingCart, 
-  Heart, 
-  User, 
-  Menu, 
-  ChevronDown, 
-  MapPin,
-  X
-} from 'lucide-react';
+import { Search, ShoppingCart, Heart, User, Menu, ChevronDown,MapPin,X} from 'lucide-react';
+import { useCart } from '../../context/CartContext';
+import { useAuth } from '../../context/AuthContext';
 
 const WalmartNavbar = () => {
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-
-  const handleCartClick = () => {
-    navigate('/cart');
-  };
+  const { cartTotalItems, cartSubtotal } = useCart();
+  const { isLoggedIn, user } = useAuth();
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -74,7 +65,7 @@ const WalmartNavbar = () => {
           </div>
 
           {/* Right Section - User Actions */}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2 sm:space-x-4">
             {/* Reorder */}
             <div className="hidden lg:flex flex-col items-center cursor-pointer hover:text-yellow-300 transition-colors">
               <Heart className="w-6 h-6" />
@@ -84,24 +75,31 @@ const WalmartNavbar = () => {
 
             {/* Sign In */}
             <div className="hidden lg:flex flex-col items-center cursor-pointer hover:text-yellow-300 transition-colors">
-              <User className="w-6 h-6" />
-              <span className="text-xs mt-1">Sign In</span>
+              {isLoggedIn && user ? (
+                <img src={user.profileImageUrl} alt="User" className="w-7 h-7 rounded-full border-2 border-white"/>
+              ) : (
+                <User className="w-6 h-6" />
+              )}
+              <span className="text-xs mt-1">{isLoggedIn && user ? user.name : 'Sign In'}</span>
               <span className="text-xs text-blue-200">Account</span>
             </div>
 
             {/* Cart */}
             <div 
-              onClick={handleCartClick}
+              onClick={() => navigate('/cart')}
               className="relative flex flex-col items-center cursor-pointer hover:text-yellow-300 transition-colors"
             >
               <div className="relative">
                 <ShoppingCart className="w-6 h-6" />
-                {/* Cart Badge */}
-                <span className="absolute -top-2 -right-2 bg-yellow-400 text-blue-600 text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
-                  1
-                </span>
+                {cartTotalItems > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-yellow-400 text-blue-600 text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                    {cartTotalItems}
+                  </span>
+                )}
               </div>
-              <span className="text-xs mt-1 hidden sm:block">$18.94</span>
+              <span className="text-xs mt-1 hidden sm:block">
+                ${cartSubtotal.toFixed(2)}
+              </span>
             </div>
 
             {/* Mobile Menu Button */}

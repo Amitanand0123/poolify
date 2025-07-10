@@ -4,7 +4,6 @@ import { PoolContext } from "./PoolContext";
 import { findOrCreatePool } from "../services/api";
 import ConfirmationModal from "../components/shared/ConfirmationModal"
 
-// --- MOCK DATA (Single Source of Truth) ---
 const MOCK_USER_DATA = {
   user_id: "user_alice",
   cart_id: "cart_abc123",
@@ -58,17 +57,14 @@ const PoolProvider = ({ children }) => {
     return () => socket.disconnect();
   }, []);
 
-  // Step 1: User requests to pool, which opens the modal
   const requestPooling = () => {
     setConfirmationVisible(true);
   };
 
-  // Step 2: User confirms in the modal, this function is called
   const confirmAndJoinPool = async () => {
-    setConfirmationVisible(false); // Close modal
+    setConfirmationVisible(false);
     setIsLoading(true);
 
-    // --- CONSTRUCT PAYLOAD BASED ON SPARK SCHEMA ---
     const payload = {
       user_id: MOCK_USER_DATA.user_id,
       cart_id: MOCK_USER_DATA.cart_id,
@@ -87,7 +83,6 @@ const PoolProvider = ({ children }) => {
       console.log("API Payload Sent:", payload);
       console.log("API Response:", response);
       
-      // Simulate delay for finding a pool
       setTimeout(() => {
         setPoolDetails(MOCK_POOL_DETAILS);
         setIsPooling(true);
@@ -115,7 +110,7 @@ const PoolProvider = ({ children }) => {
     isPooling,
     isLoading,
     poolDetails,
-    requestPooling, // Expose this function to trigger the modal
+    requestPooling,
     cancelPooling,
   };
 

@@ -1,27 +1,18 @@
-// PoolingOptIn.jsx - Debug version
 import React from 'react';
 import { usePool } from '../../context/PoolContext';
 import { HiOutlineUserGroup } from 'react-icons/hi';
 
 const PoolingOptIn = () => {
     const poolContext = usePool();
-    
-    // Debug: Log the context to see what we're getting
     console.log('PoolingOptIn - Context:', poolContext);
-    
-    // Destructure with fallback to prevent errors
     const { 
         requestPooling = () => console.log('requestPooling not found'), 
         isLoading = false 
     } = poolContext || {};
-
-    // Debug: Add a simple test function
     const handleClick = () => {
         console.log('Button clicked!');
         console.log('requestPooling function:', requestPooling);
         console.log('isLoading:', isLoading);
-        
-        // Try to call the function
         if (typeof requestPooling === 'function') {
             console.log('Calling requestPooling...');
             requestPooling();

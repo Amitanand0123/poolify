@@ -1,6 +1,3 @@
-// src/context/poolMockData.js
-
-// Replace these with real API‑driven data later
 export const MOCK_POOL_DETAILS = {
   id: "pool_123xyz",
   members: [
