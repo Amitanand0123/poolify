@@ -1,9 +1,34 @@
+// PoolingOptIn.jsx - Debug version
 import React from 'react';
-import  usePool  from '../../context/usePool';
+import { usePool } from '../../context/PoolContext';
 import { HiOutlineUserGroup } from 'react-icons/hi';
 
 const PoolingOptIn = () => {
-    const { optIntoPooling, isLoading } = usePool();
+    const poolContext = usePool();
+    
+    // Debug: Log the context to see what we're getting
+    console.log('PoolingOptIn - Context:', poolContext);
+    
+    // Destructure with fallback to prevent errors
+    const { 
+        requestPooling = () => console.log('requestPooling not found'), 
+        isLoading = false 
+    } = poolContext || {};
+
+    // Debug: Add a simple test function
+    const handleClick = () => {
+        console.log('Button clicked!');
+        console.log('requestPooling function:', requestPooling);
+        console.log('isLoading:', isLoading);
+        
+        // Try to call the function
+        if (typeof requestPooling === 'function') {
+            console.log('Calling requestPooling...');
+            requestPooling();
+        } else {
+            console.error('requestPooling is not a function:', typeof requestPooling);
+        }
+    };
 
     return (
         <div className="border border-walmart-blue rounded-lg p-4 bg-blue-50 flex flex-col md:flex-row items-center gap-4">
@@ -13,7 +38,7 @@ const PoolingOptIn = () => {
                 <p className="text-sm text-gray-700">Group your order with neighbors to save on fees and reduce delivery emissions. We'll find a match for you.</p>
             </div>
             <button
-                onClick={optIntoPooling}
+                onClick={handleClick}
                 disabled={isLoading}
                 className="w-full md:w-auto px-6 py-2 rounded-full font-bold text-white bg-yellow-500 hover:bg-walmart-blue-hover transition-colors disabled:bg-gray-400"
             >
