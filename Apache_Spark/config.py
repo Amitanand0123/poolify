@@ -1,0 +1,5 @@
+KAFKA_BOOTSTRAP_SERVERS = "localhost:9092"
+KAFKA_TOPIC = "cart-events"
+POOL_RADIUS_KM = 3.0
+POOL_TIME_WINDOW_MINUTES = 60
+BACKEND_API_URL = "http://localhost:5000/api/pools"
