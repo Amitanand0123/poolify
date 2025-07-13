@@ -39,7 +39,7 @@ const HomePage = () => {
                 title="Up to 40% off"
                 subtitle="outdoor gear"
                 linkText="Shop Deals"
-                imageUrl="/outdoor-gear.jpg"
+                imageUrl="/surfboard.jpg"
                 bgColor="bg-gradient-to-br from-blue-200 to-blue-300"
               />
             </DealLinkCard>
@@ -78,7 +78,7 @@ const HomePage = () => {
                 title="Up to 30% off"
                 subtitle="bikes & ride-ons"
                 linkText="Shop Deals"
-                imageUrl="/bikes.jpg"
+                imageUrl="/bike.jpg"
                 bgColor="bg-gradient-to-br from-blue-200 to-blue-300"
               />
             </DealLinkCard>
@@ -101,9 +101,10 @@ const HomePage = () => {
           <div className="col-span-1 md:col-span-1 lg:col-span-1">
             <DealLinkCard to="/deals/electronics">
               <CategoryCard 
-                title="Up to 55% off"
+                title="Electronics"
+                subtitle="Up to 55% off"
                 linkText="Shop now"
-                imageUrl="/electronics.jpg"
+                imageUrl="/tablet.jpg"
                 bgColor="bg-gradient-to-br from-yellow-200 to-yellow-300"
               />
             </DealLinkCard>
