@@ -22,7 +22,6 @@ const HomePage = () => {
                 linkText="Shop Deals"
                 imageUrl="/beauty.jpg"
                 bgColor="bg-gradient-to-br from-blue-300 to-blue-400"
-
               />
             </DealLinkCard>
           </div>

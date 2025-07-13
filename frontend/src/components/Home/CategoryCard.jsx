@@ -10,9 +10,9 @@ const CategoryCard = ({
 }) => {
   return (
     <div className={`relative overflow-hidden rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 h-full ${bgColor} ${className}`}>
-      <div className="relative p-6 h-full flex flex-col justify-between min-h-[200px]">
-        {/* Content */}
-        <div className="z-10 relative">
+      <div className="relative p-6 h-full flex flex-row items-center justify-between min-h-[200px] gap-4">
+        {/* Content - Left Side */}
+        <div className="flex-1 z-10">
           <h3 className="text-lg font-semibold text-gray-800 mb-1">
             {title}
           </h3>
@@ -26,9 +26,9 @@ const CategoryCard = ({
           </button>
         </div>
 
-        {/* Image */}
+        {/* Image - Right Side */}
         {imageUrl && (
-          <div className="absolute right-2 bottom-2 w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28">
+          <div className="flex-shrink-0 w-32 h-32 sm:w-28 sm:h-28 md:w-36 md:h-36 lg:w-40 lg:h-40">
             <img 
               src={imageUrl} 
               alt={title}
