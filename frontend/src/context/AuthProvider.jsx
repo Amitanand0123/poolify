@@ -7,7 +7,7 @@ const MOCK_SIGNED_IN_USER = {
 };
 
 export const AuthProvider = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(MOCK_SIGNED_IN_USER);
 
   const login = () => {

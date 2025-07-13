@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Search, ShoppingCart, Heart, User, Menu, ChevronDown,MapPin,X} from 'lucide-react';
+import { Search, ShoppingCart, Heart, User, Menu, ChevronDown, MapPin, X } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const WalmartNavbar = () => {
   const navigate = useNavigate();
@@ -10,6 +10,7 @@ const WalmartNavbar = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const { cartTotalItems, cartSubtotal } = useCart();
   const { isLoggedIn, user } = useAuth();
+
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -21,24 +22,24 @@ const WalmartNavbar = () => {
   };
 
   return (
-    <nav className="bg-blue-600 text-white shadow-lg p-2">
+    <nav className="bg-blue-600 text-white shadow-lg h-40">
       {/* Top Section */}
-      <div className="w-full px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+      <div className="w-full px-4 sm:px-6 lg:px-8 h-24 pt-4">
+        <div className="flex items-center gap-4 h-16 justify-between">
           {/* Left Section - Logo and Location */}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-4 gap-4">
             {/* Walmart Logo */}
-            <div className="flex items-center">
-              <div className="w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center">
-                <img src="/walmart-logo.png" alt="" />
+            <div className="flex items-center cursor-pointer" onClick={() => navigate('/')}>
+              <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+                <img src="https://www.vectorlogo.zone/logos/walmart/walmart-icon.svg" className='bg-blue-600' alt="" />
               </div>
             </div>
 
             {/* Location Picker */}
-            <div className="hidden md:flex items-center space-x-2 bg-blue-700 px-3 py-2 rounded-lg cursor-pointer hover:bg-blue-800 transition-colors">
+            <div className="hidden bg-blue-800 md:flex items-center space-x-2 cursor-pointer hover:bg-blue-900 px-3 py-2 transition-colors border border-blue-900 rounded-full w-96">
               <MapPin className="w-4 h-4" />
-              <div className="text-sm">
-                <div className="font-medium">Pickup or delivery?</div>
+              <div className="text-lg">
+                <div className="font-semibold">Pickup or delivery?</div>
                 <div className="text-blue-200 text-xs">Sacramento, 95829 • Sacramento Supe...</div>
               </div>
               <ChevronDown className="w-4 h-4" />
@@ -46,59 +47,65 @@ const WalmartNavbar = () => {
           </div>
 
           {/* Center Section - Search */}
-          <div className="flex-1 max-w-2xl mx-4">
-            <form onSubmit={handleSearch} className="relative">
+          <div className="flex-1 w-5xl mx-4 py-4">
+            <div className="relative">
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search everything at Walmart online and in store"
-                className="w-full px-4 py-3 pr-12 text-gray-800 bg-white rounded-full border-2 border-transparent focus:border-yellow-400 focus:outline-none"
+                className="w-full px-4 py-2.5 pr-12 text-blue-900 bg-white rounded-full border-2 border-transparent focus:outline-none text-lg"
               />
               <button
-                type="submit"
-                className="absolute right-2 top-1/2 transform -translate-y-1/2 p-2 bg-yellow-400 hover:bg-yellow-500 rounded-full transition-colors"
+                onClick={handleSearch}
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 p-2 rounded-full transition-colors"
               >
-                <Search className="w-5 h-5 text-gray-800" />
+                <Search className="w-4 h-4 text-gray-800" />
               </button>
-            </form>
+            </div>
           </div>
 
           {/* Right Section - User Actions */}
-          <div className="flex items-center space-x-2 sm:space-x-4">
+          <div className="flex items-center space-x-4 justify-between w-[22rem]">
             {/* Reorder */}
-            <div className="hidden lg:flex flex-col items-center cursor-pointer hover:text-yellow-300 transition-colors">
+            <div className="hidden lg:flex flex-row items-center cursor-pointer hover:underline transition-colors gap-2">
               <Heart className="w-6 h-6" />
-              <span className="text-xs mt-1">Reorder</span>
-              <span className="text-xs text-blue-200">My Items</span>
+              <div className='flex flex-col'>
+                <span className="text-lg mt-1">Reorder</span>
+                <span className="text-lg text-white font-bold">My Items</span>
+              </div>
             </div>
 
             {/* Sign In */}
-            <div className="hidden lg:flex flex-col items-center cursor-pointer hover:text-yellow-300 transition-colors">
-              {isLoggedIn && user ? (
-                <img src={user.profileImageUrl} alt="User" className="w-7 h-7 rounded-full border-2 border-white"/>
-              ) : (
-                <User className="w-6 h-6" />
-              )}
-              <span className="text-xs mt-1">{isLoggedIn && user ? user.name : 'Sign In'}</span>
-              <span className="text-xs text-blue-200">Account</span>
+            <div className="hidden lg:flex flex-row items-center cursor-pointer hover:underline transition-colors gap-2">
+              {
+                isLoggedIn && user ? (
+                  <div>
+                    <User className="w-6 h-6" />
+                  </div>
+                ) : (
+                  <div className='flex flex-row gap-2'>
+                    <User className="w-6 h-6 mt-4" />
+                    <div className='flex flex-col'>
+                      <span className="text-lg mt-1">Sign In</span>
+                      <span className="text-lg text-white font-bold">Account</span>
+                    </div>
+                  </div>
+                )
+              }
+              
             </div>
 
             {/* Cart */}
-            <div 
-              onClick={() => navigate('/cart')}
-              className="relative flex flex-col items-center cursor-pointer hover:text-yellow-300 transition-colors"
-            >
+            <div className="relative flex flex-col items-center cursor-pointer hover:underline transition-colors top-2">
               <div className="relative">
-                <ShoppingCart className="w-6 h-6" />
-                {cartTotalItems > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-yellow-400 text-blue-600 text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
-                    {cartTotalItems}
-                  </span>
-                )}
+                <ShoppingCart className="w-6 h-6" onClick={() => navigate('/cart')} />
+                <span className="absolute -top-2 -right-2 bg-yellow-400 text-blue-600 text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                  {cartTotalItems}
+                </span>
               </div>
-              <span className="text-xs mt-1 hidden sm:block">
-                ${cartSubtotal.toFixed(2)}
+              <span className="text-lg mt-1 hidden sm:block">
+                {cartSubtotal ? `$${cartSubtotal.toFixed(2)}` : '0.00'}
               </span>
             </div>
 
@@ -114,36 +121,36 @@ const WalmartNavbar = () => {
       </div>
 
       {/* Bottom Section - Navigation Links */}
-      <div className="bg-blue-700 border-t border-blue-500">
+      <div className="bg-[#F0F5FF] border-t border-blue-500 text-blue-900 justify-between h-16 pt-1">
         <div className="w-full px-4 sm:px-6 lg:px-8">
           <div className="hidden md:flex items-center h-12 space-x-8">
             {/* Departments */}
-            <div className="flex items-center space-x-2 cursor-pointer hover:text-yellow-300 transition-colors">
+            <div className="flex items-center space-x-2 cursor-pointer hover:underline transition-colors">
               <Menu className="w-4 h-4" />
-              <span className="font-medium">Departments</span>
+              <span className="font-bold text-lg">Departments</span>
               <ChevronDown className="w-4 h-4" />
             </div>
 
             {/* Services */}
-            <div className="flex items-center space-x-2 cursor-pointer hover:text-yellow-300 transition-colors">
-              <span className="font-medium">Services</span>
+            <div className="flex items-center space-x-2 cursor-pointer hover:underline transition-colors">
+              <span className="font-bold text-lg">Services</span>
               <ChevronDown className="w-4 h-4" />
             </div>
 
             {/* Navigation Links */}
-            <div className="flex items-center space-x-6 text-sm">
-              <a href="#" className="hover:text-yellow-300 transition-colors border-r border-blue-500 pr-6">Get it Fast</a>
-              <a href="#" className="hover:text-yellow-300 transition-colors">New Arrivals</a>
-              <a href="#" className="hover:text-yellow-300 transition-colors">Deals</a>
-              <a href="#" className="hover:text-yellow-300 transition-colors">Dinner Made Easy</a>
-              <a href="#" className="hover:text-yellow-300 transition-colors">Pharmacy Delivery</a>
-              <a href="#" className="hover:text-yellow-300 transition-colors">Trending</a>
-              <a href="#" className="hover:text-yellow-300 transition-colors">Swim Shop</a>
-              <a href="#" className="hover:text-yellow-300 transition-colors">My Items</a>
-              <a href="#" className="hover:text-yellow-300 transition-colors">Auto Service</a>
-              <a href="#" className="hover:text-yellow-300 transition-colors">Only at Walmart</a>
-              <a href="#" className="hover:text-yellow-300 transition-colors">Registry</a>
-              <a href="#" className="hover:text-yellow-300 transition-colors">Walmart+</a>
+            <div className="flex items-center space-x-6 text-1.5rem justify-between gap-4">
+              <a href="#" className="hover:underline transition-colors">Get it Fast</a>
+              <a href="#" className="hover:underline transition-colors">New Arrivals</a>
+              <a href="#" className="hover:underline transition-colors">Deals</a>
+              <a href="#" className="hover:underline transition-colors">Dinner Made Easy</a>
+              <a href="#" className="hover:underline transition-colors">Pharmacy Delivery</a>
+              <a href="#" className="hover:underline transition-colors">Trending</a>
+              <a href="#" className="hover:underline transition-colors">Back to School</a>
+              <a href="#" className="hover:underline transition-colors">My Items</a>
+              <a href="#" className="hover:underline transition-colors">Auto Service</a>
+              <a href="#" className="hover:underline transition-colors">Only at Walmart</a>
+              <a href="#" className="hover:underline transition-colors">Registry</a>
+              <a href="#" className="hover:underline transition-colors">Walmart+</a>
             </div>
           </div>
         </div>
@@ -156,7 +163,7 @@ const WalmartNavbar = () => {
             {/* Mobile Location */}
             <div className="flex items-center space-x-2 bg-blue-800 px-3 py-2 rounded-lg">
               <MapPin className="w-4 h-4" />
-              <div className="text-sm">
+              <div className="text-lg">
                 <div className="font-medium">Pickup or delivery?</div>
                 <div className="text-blue-200 text-xs">Sacramento, 95829</div>
               </div>
@@ -175,7 +182,7 @@ const WalmartNavbar = () => {
             </div>
 
             {/* Mobile Navigation Links */}
-            <div className="space-y-3">
+            <div className="space-y-3  bg-blue-100">
               <div className="flex items-center space-x-2 py-2">
                 <Menu className="w-4 h-4" />
                 <span className="font-medium">Departments</span>
@@ -184,18 +191,18 @@ const WalmartNavbar = () => {
                 <span className="font-medium">Services</span>
               </div>
               <div className="space-y-2 pl-6">
-                <div className="py-1"><a href="#" className="hover:text-yellow-300">Get it Fast</a></div>
-                <div className="py-1"><a href="#" className="hover:text-yellow-300">New Arrivals</a></div>
-                <div className="py-1"><a href="#" className="hover:text-yellow-300">Deals</a></div>
-                <div className="py-1"><a href="#" className="hover:text-yellow-300">Dinner Made Easy</a></div>
-                <div className="py-1"><a href="#" className="hover:text-yellow-300">Pharmacy Delivery</a></div>
-                <div className="py-1"><a href="#" className="hover:text-yellow-300">Trending</a></div>
-                <div className="py-1"><a href="#" className="hover:text-yellow-300">Swim Shop</a></div>
-                <div className="py-1"><a href="#" className="hover:text-yellow-300">My Items</a></div>
-                <div className="py-1"><a href="#" className="hover:text-yellow-300">Auto Service</a></div>
-                <div className="py-1"><a href="#" className="hover:text-yellow-300">Only at Walmart</a></div>
-                <div className="py-1"><a href="#" className="hover:text-yellow-300">Registry</a></div>
-                <div className="py-1"><a href="#" className="hover:text-yellow-300">Walmart+</a></div>
+                <div className="py-1"><a href="#" className="hover:underline">Get it Fast</a></div>
+                <div className="py-1"><a href="#" className="hover:underline">New Arrivals</a></div>
+                <div className="py-1"><a href="#" className="hover:underline">Deals</a></div>
+                <div className="py-1"><a href="#" className="hover:underline">Dinner Made Easy</a></div>
+                <div className="py-1"><a href="#" className="hover:underline">Pharmacy Delivery</a></div>
+                <div className="py-1"><a href="#" className="hover:underline">Trending</a></div>
+                <div className="py-1"><a href="#" className="hover:underline">Back to School</a></div>
+                <div className="py-1"><a href="#" className="hover:underline">My Items</a></div>
+                <div className="py-1"><a href="#" className="hover:underline">Auto Service</a></div>
+                <div className="py-1"><a href="#" className="hover:underline">Only at Walmart</a></div>
+                <div className="py-1"><a href="#" className="hover:underline">Registry</a></div>
+                <div className="py-1"><a href="#" className="hover:underline">Walmart+</a></div>
               </div>
             </div>
           </div>

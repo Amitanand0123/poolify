@@ -29,8 +29,8 @@ const ProductCard = ({ product }) => {
     <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 flex flex-col justify-between hover:shadow-lg transition-shadow duration-300">
       <div>
         {discount > 0 && (
-          <span className="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full mb-2 inline-block">
-            {discount}% OFF
+          <span className="bg-blue-900 text-white text-xs font-bold px-2 py-1 border rounded-sm mb-2 inline-block">
+            Deal
           </span>
         )}
         <img src={imageUrl} alt={name} className="w-full h-32 sm:h-40 object-contain mb-4" />
@@ -40,7 +40,7 @@ const ProductCard = ({ product }) => {
         <div className="my-2">
           {discount > 0 ? (
             <div>
-              <p className="text-xl font-bold text-red-600">${discountedPrice.toFixed(2)}</p>
+              <p className="text-xl font-bold text-green-600">${discountedPrice.toFixed(2)}</p>
               <p className="text-sm text-gray-500 line-through">${price.toFixed(2)}</p>
             </div>
           ) : (
@@ -52,7 +52,7 @@ const ProductCard = ({ product }) => {
         {quantityInCart === 0 ? (
           <button
             onClick={handleIncrement}
-            className="w-full flex items-center justify-center gap-2 py-2 px-4 rounded-full font-bold text-white bg-blue-600 hover:bg-blue-700 transition-colors"
+            className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-full font-bold text-white bg-blue-600 hover:bg-blue-700 transition-colors"
           >
             <Plus className="w-5 h-5" />
             Add

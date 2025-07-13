@@ -1,9 +1,22 @@
 
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { CartContext } from './CartContext';
 
 export const CartProvider = ({ children }) => {
-  const [cartItems, setCartItems] = useState([]);
+  const [cartItems, setCartItems] = useState(()=>{
+    try {
+      const localData=localStorage.getItem('cart');
+      return localData ? JSON.parse(localData) : []
+
+    } catch (error) {
+      console.error('Error parsing cart data:', error);
+      return [];
+    }
+  });
+
+  useEffect(()=>{
+    localStorage.setItem('cart',JSON.stringify(cartItems));
+  },[cartItems])
 
   const addToCart = (product) => {
     setCartItems((prevItems) => {

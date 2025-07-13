@@ -1,7 +1,7 @@
 const MOCK_PRODUCTS = {
   beauty: [
     { id: 'b1', name: 'Advanced Night Repair Serum', price: 75.00, discount: 15, imageUrl: '/beauty-serum.jpg', category: 'beauty' },
-    { id: 'b2', name: 'Ultra Facial Cleanser', price: 22.00, discount: 0, imageUrl: '/beauty-cleanser.jpg', category: 'beauty' },
+    { id: 'b2', name: 'Ultra Facial Cleanser', price: 22.00, discount: 10, imageUrl: '/beauty-cleanser.jpg', category: 'beauty' },
     { id: 'b3', name: 'Electric Sonic Toothbrush', price: 89.99, discount: 20, imageUrl: '/beauty-toothbrush.jpg', category: 'beauty' },
   ],
   'outdoor-gear': [
