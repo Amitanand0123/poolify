@@ -1,24 +1,25 @@
 import React from 'react';
 import Button from '../shared/Button';
+import { useCart } from '../../context/CartContext';
 
 const CheckoutSummary = () => {
-    const subtotal = 18.94;
-    const shipping = 6.99;
-    const estimatedTotal = (subtotal + shipping).toFixed(2);
+    const { cartSubtotal, cartTotalItems } = useCart();
+    const shipping = cartSubtotal > 35.00 ? 0 : 6.99;
+    const estimatedTotal = (cartSubtotal + shipping).toFixed(2);
 
   return (
-    <div className="bg-white p-4 rounded-lg shadow-sm">
+    <div className="bg-white p-4 rounded-lg shadow-sm sticky top-24">
         <Button>Continue to checkout</Button>
         <div className="text-sm text-gray-600 text-center my-2">For the best shopping experience, <a href="#" className="underline font-bold">sign in</a></div>
 
         <div className="mt-4 space-y-2 border-t pt-4">
             <div className="flex justify-between">
-                <span>Subtotal (1 item)</span>
-                <span>${subtotal.toFixed(2)}</span>
+                <span>Subtotal ({cartTotalItems} item{cartTotalItems !== 1 && 's'})</span>
+                <span>${cartSubtotal.toFixed(2)}</span>
             </div>
             <div className="flex justify-between">
-                <span>Shipping <span className="text-gray-500">(below $35 order minimum)</span></span>
-                <span>${shipping.toFixed(2)}</span>
+                <span>Shipping</span>
+                <span>{shipping > 0 ? `$${shipping.toFixed(2)}` : 'Free'}</span>
             </div>
             <div className="flex justify-between font-bold">
                 <span>Taxes</span>
