@@ -1,30 +1,46 @@
-from pyspark.sql import SparkSession
+import os
 from pyspark.sql.functions import from_json, col
-from config import KAFKA_BOOTSTRAP_SERVERS, KAFKA_TOPIC
-from schema import cart_event_schema
-from pool_matcher import find_pools
-from backend_client import send_pool_to_backend
+from configs.spark_conf import create_spark_session
+from src.schemas import order_schema
+from src.jobs.pooling_job import match_udf
 
-def process_batch(df, epoch_id):
-    pools = find_pools(df, spark)
-    for row in pools.collect():
-        pool = {
-            "item_category": row["item_category"],
-            "members": [member.asDict() for member in row["members"]],
-            "pool_size": row["pool_size"]
-        }
-        send_pool_to_backend(pool)
+# Config
+KAFKA_BOOT = os.getenv("KAFKA_BOOTSTRAP","localhost:29092")
+IN_TOPIC   = os.getenv("INPUT_TOPIC","orders")
+OUT_TOPIC  = os.getenv("OUTPUT_TOPIC","order_pool_results")
+CP_LOC     = os.getenv("CHECKPOINT_LOCATION","/tmp/checkpoint_order_pooling")
 
-if __name__ == "__main__":
-    spark = SparkSession.builder.appName("CartStreamMatchingEngine").getOrCreate()
-    raw_df = spark.readStream \
-        .format("kafka") \
-        .option("kafka.bootstrap.servers", KAFKA_BOOTSTRAP_SERVERS) \
-        .option("subscribe", KAFKA_TOPIC) \
-        .load()
-    cart_events = raw_df.select(from_json(col("value").cast("string"), cart_event_schema).alias("data")).select("data.*")
-    query = cart_events.writeStream \
-        .foreachBatch(process_batch) \
-        .outputMode("append") \
-        .start()
-    query.awaitTermination()
+# Spark session
+spark = create_spark_session()
+
+# Read Kafka stream
+df = (
+    spark.readStream.format("kafka")
+    .option("kafka.bootstrap.servers", KAFKA_BOOT)
+    .option("subscribe", IN_TOPIC)
+    .load()
+)
+
+# Parse JSON and apply matching UDF
+orders = df.selectExpr("CAST(value AS STRING) as json_str") \
+    .select(from_json(col("json_str"), order_schema).alias("o")) \
+    .select("o.*")
+
+results = orders.withColumn(
+    "value", match_udf(
+        col("userId"), col("lat"), col("lng"),
+        col("itemCategory"), col("cartItems"),
+        col("deliveryTime"), col("regionType")
+    )
+).selectExpr("CAST(userId AS STRING) AS key", "value")
+
+# Write back to Kafka
+query = (
+    results.writeStream.format("kafka")
+    .option("kafka.bootstrap.servers", KAFKA_BOOT)
+    .option("topic", OUT_TOPIC)
+    .option("checkpointLocation", CP_LOC)
+    .start()
+)
+
+query.awaitTermination()
